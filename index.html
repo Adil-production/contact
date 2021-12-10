@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"/>
+    <title>Contact</title>
+</head>
+<body onload="get()">
+    <ion-app>
+        <ion-header>
+            <ion-toolbar>
+                    <ion-title>Contact</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <div id="all">
+                <ion-fab vertical="bottom" horizontal="end" slot="fixed" onclick="add()">
+                    <ion-fab-button>
+                        <ion-icon name="add-outline"></ion-icon>
+                    </ion-fab-button>
+                  </ion-fab>
+                  <div>
+                    <ion-list id="main">
+
+                    </ion-list>
+                  </div>
+            </div>
+              <div id="add" style="display: none;">
+                <ion-item>
+                    <ion-label position="floating">Contact Name</ion-label>
+                    <ion-input type="text" id="name"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Contact Number</ion-label>
+                    <ion-input type="number" id="number"></ion-input>
+                </ion-item>
+                <br>
+                <div align='center'>
+                    <ion-button onclick="save()">Save</ion-button>
+                    <ion-button fill="outline" onclick="back()" id="back">Back</ion-button>
+                </div>
+              </div>
+        </ion-content>
+        <script>
+            function add(){
+                document.getElementById("all").style.display = 'none';
+                document.getElementById("add").style.display = 'block';
+            } function back(){
+                document.getElementById("all").style.display = 'block';
+                document.getElementById("add").style.display = 'none';
+            } function save(){
+                if(document.getElementById("name").value == ""){
+                    alert("Name field is empty")
+                } else if(document.getElementById("number").value == ""){
+                    alert("Number field is empty")
+                } else {
+                    var name = document.getElementById("name");
+                    var num = document.getElementById("number");
+                    var data = localStorage.getItem("data");
+                    if(data){
+                        localStorage.setItem("data" , localStorage.getItem("data") + `<ion-item> ${name.value} : ${num.value} </ion-item>`)
+                        var main = document.getElementById("main")
+                        main.innerHTML = localStorage.getItem("data")
+                        document.getElementById("back").click()
+                    } else {
+                        localStorage.setItem("data" , `<ion-item> ${name.value} : ${num.value} </ion-item>`)
+                        var main = document.getElementById("main")
+                        main.innerHTML = localStorage.getItem("data")
+                        document.getElementById("back").click()
+                    }
+                    
+
+                }
+
+            }
+            function get(){
+                var main = document.getElementById("main")
+                main.innerHTML = localStorage.getItem("data")
+            }
+        </script>
+
+    </ion-app>
+</body>
+</html>
