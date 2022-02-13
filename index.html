@@ -11,23 +11,28 @@
 </head>
 <body onload="get()">
     <ion-app>
-        <ion-header>
+        <ion-header >
             <ion-toolbar color="primary">
                     <ion-title>Contact</ion-title>
             </ion-toolbar>
+            <ion-toolbar color="primary" id="search">
+                <ion-searchbar id="input" oninput="myFunction()"></ion-searchbar>
+            </ion-toolbar>
         </ion-header>
+        <br>
         <ion-content>
             <div id="all">
                 <ion-fab vertical="bottom" horizontal="end" slot="fixed" onclick="add()">
                     <ion-fab-button>
                         <ion-icon name="add-outline"></ion-icon>
                     </ion-fab-button>
-                  </ion-fab>
-                  <div>
-                    <ion-list id="main">
-
-                    </ion-list>
-                  </div>
+                </ion-fab>
+                <ion-fab vertical="bottom" horizontal="center" slot="fixed" onclick="delet()">
+                    <ion-fab-button>
+                        <ion-icon name="trash-sharp"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+                    <ion-list id="main"></ion-list>
             </div>
               <div id="add" style="display: none;">
                 <ion-item>
@@ -46,12 +51,22 @@
               </div>
         </ion-content>
         <script>
-            function add(){
+            function delet(){
+                let confirmAction = confirm("Are you sure to execute this action?");
+                if (confirmAction) {
+                    localStorage.removeItem("data")
+                    window.location.reload()
+                    //yes
+                    alert("Action successfully executed");
+                } else {
+                    alert("Action canceled");
+                }
+            }function add(){
                 document.getElementById("all").style.display = 'none';
                 document.getElementById("add").style.display = 'block';
+                document.getElementById("search").style.display = 'none';
             } function back(){
-                document.getElementById("all").style.display = 'block';
-                document.getElementById("add").style.display = 'none';
+                window.location.reload()
             } function save(){
                 if(document.getElementById("name").value == ""){
                     alert("Name field is empty")
@@ -81,6 +96,23 @@
                 var main = document.getElementById("main")
                 main.innerHTML = localStorage.getItem("data")
             }
+
+window.addEventListener('load', (event) => {
+    const searchbar = document.querySelector('ion-searchbar');
+    const items = Array.from(document.querySelector('ion-list').children);
+
+      searchbar.addEventListener('ionInput', handleInput);
+
+      function handleInput(event) {
+        const query = event.target.value.toLowerCase();
+        requestAnimationFrame(() => {
+          items.forEach((item) => {
+            const shouldShow = item.textContent.toLowerCase().indexOf(query) > -1;
+            item.style.display = shouldShow ? 'block' : 'none';
+          });
+        });
+      }
+});
         </script>
 
     </ion-app>
